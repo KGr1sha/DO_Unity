@@ -4,9 +4,10 @@ public class Follow : MonoBehaviour
 {
     [SerializeField] private Transform target;
     [SerializeField] private float speed;
+    private Vector3 toTarget;
 
     private void Update() {
-        Vector3 toTarget = (target.position - transform.position).normalized;
-        transform.Translate(toTarget * speed * Time.deltaTime);
+        toTarget = (target.position - transform.position).normalized;
+        transform.Translate(speed * Time.deltaTime * toTarget);
     }
 }
