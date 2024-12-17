@@ -3,10 +3,11 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class SonicSound : MonoBehaviour
 {
-    private AudioSource audioSource;
+    [SerializeField] private AudioSource engineAudioSource;
+    [SerializeField] private AudioSource jumpAudioSource;
 
-    private void Start() {
-        audioSource = GetComponent<AudioSource>();
+    private void Awake() {
+        SonicMovementPhysics.OnJump += PlayJumpSound;
     }
 
     private void Update() {
@@ -16,10 +17,14 @@ public class SonicSound : MonoBehaviour
         || Input.GetKeyUp(KeyCode.S);
 
         if (moveKeyReleased) {
-            audioSource.Stop();
+            engineAudioSource.Stop();
         }
         if (moveKeyPressed) {
-            audioSource.Play();
+            engineAudioSource.Play();
         }
+    }
+
+    private void PlayJumpSound() {
+        jumpAudioSource.Play();
     }
 }
