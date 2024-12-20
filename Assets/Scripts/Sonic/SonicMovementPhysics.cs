@@ -2,40 +2,38 @@ using UnityEngine;
 using System;
 
 [RequireComponent(typeof(Rigidbody))]
-public class SonicMovementPhysics : MonoBehaviour
-{
+public class SonicMovementPhysics : MonoBehaviour {
     public static event Action OnJump;
     [SerializeField] private float moveSpeed;
     [SerializeField] private float spinSpeed;
     [SerializeField] private float rotateSpeed;
     [SerializeField] private float jumpForce = 100;
     [SerializeField] private Transform body;
+    [SerializeField] private bool spinBody;
     [SerializeField] private Transform cameraTransform;
     private Rigidbody rb;
     private float forwardInput;
-    private float horizontalInput;
     private bool jumpInput;
     private GroundCheck groundCheck;
 
-    private void Start()
-    {
+    private void Start() {
         rb = GetComponent<Rigidbody>(); 
         groundCheck = GetComponent<GroundCheck>();
     }
 
-    private void Update()
-    {
+    private void Update() {
         forwardInput = Input.GetAxis("Vertical");
-        horizontalInput = Input.GetAxis("Horizontal"); 
         if(Input.GetKeyDown(KeyCode.Space)) {
             jumpInput = true;
         }
 
         float speed = rb.velocity.magnitude;
 
-        body.transform.Rotate(
-            Vector3.right * speed * spinSpeed * Time.deltaTime
-        );
+        if (spinBody) {
+            body.transform.Rotate(
+                Vector3.right * speed * spinSpeed * Time.deltaTime
+            );
+        }
 
         Vector3 fromCamera = GetHorizontalProjection(
             transform.position - cameraTransform.position
